@@ -3,7 +3,12 @@ require 'json'
 
 class CoordsController < ApplicationController
   def fetch_weather
-    @url_safe_address = URI.encode(params[:user_address])
+    if params[:user_address]
+        address = params[:user_address]
+    else
+        address = "the corner of foster and sheridan"
+    end
+    @url_safe_address = URI.encode(address)
     url = "http://maps.googleapis.com/maps/api/geocode/json?address="+@url_safe_address+"&sensor=false"
     raw_data = open(url).read
     parsed_data = JSON.parse(raw_data)
